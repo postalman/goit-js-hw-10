@@ -18,3 +18,31 @@ body {
   max-width: 320px;
   margin-bottom: 16px;
 }
+
+.img {
+  width: 35px;
+  height: 30px;
+}
+
+.container {
+  list-style: none;
+  display: flex;
+  gap: 5px;
+  
+}
+
+.container-info {
+  list-style: none;
+  display: flex;
+  gap: 5px;
+  padding: 0;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.comma:not(:last-child):after {
+  content: ',';
+}
