@@ -14,53 +14,49 @@ const countryDoc = document.querySelector('.country-info');
 input.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
 function onInput(e) {
-    if (e.target.value.trim().length === 0) {
-        removeInfo();
-        return;
-    }
-    
-    COUNTRIES.fetchCountries(`${e.target.value.trim()}`).then(c => {
-        if (c.status === 404) {
-            onError();
-            return;
-        } else if (c.length > 10) {
-            onAlert();
-            return;
-        } else if (c.length !== 1) {
-            onCountries(c);
-            return;
-        }
-        onOneCountry(c);
+  if (e.target.value.trim().length === 0) {
+    return removeInfo();
+  }
+
+  COUNTRIES.fetchCountries(`${e.target.value.trim()}`)
+    .then(c => {
+      if (c.length > 10) {
+        return onAlert();
+      } else if (c.length !== 1) {
+        return onCountries(c);
+      }
+
+      onOneCountry(c);
+    })
+    .catch(error => {
+      onError();
     });
-        
 }
 
 function onError() {
-    Notify.failure('Oops, there is no country with that name');
-    removeInfo();
+  Notify.failure('Oops, there is no country with that name');
+  removeInfo();
 }
 
-function onAlert () {
-    Notify.info('Too many matches found. Please enter a more specific name.');
-    removeInfo();
+function onAlert() {
+  Notify.info('Too many matches found. Please enter a more specific name.');
+  removeInfo();
 }
 
 function onCountries(c) {
-    const allCountries = markUpOne(c);
-    countryDoc.innerHTML = allCountries;
+  removeInfo();
+  const allCountries = markUpOne(c);
+
+  countryDoc.insertAdjacentHTML('beforeend', allCountries);
 }
 
 function onOneCountry(c) {
-    const oneCountry = markUpFull(c);
-    countryDoc.innerHTML = oneCountry;
+  removeInfo();
+  const oneCountry = markUpFull(c);
+
+  countryDoc.insertAdjacentHTML('beforeend', oneCountry);
 }
 
 function removeInfo() {
-    countryDoc.innerHTML = '';
+  countryDoc.innerHTML = '';
 }
-
-
-
-
-
-
